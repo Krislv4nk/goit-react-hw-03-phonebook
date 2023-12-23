@@ -16,7 +16,30 @@ export  class App extends Component {
       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
     ],
     filter: '',
+    addedToLocalSt: false,
   };
+
+componentDidUpdate(prevProps, prevState) {
+  if (prevState.contacts !== this.state.contacts) {
+    window.localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+  }
+  if (prevState.addedToLocalSt !== this.state.addedToLocalSt) {
+    window.localStorage.setItem('addedToLocalSt', JSON.stringify(this.state.addedToLocalSt));
+  }
+}
+
+componentDidMount() {
+  const addedToLocalSt = window.localStorage.getItem('addedToLocalSt');
+  const contacts = window.localStorage.getItem('contacts');
+  if (addedToLocalSt) {
+    this.setState({ addedToLocalSt: JSON.parse(addedToLocalSt) });
+  }
+  if (contacts) {
+    this.setState({ contacts: JSON.parse(contacts) });
+  }
+}
+  
+
   handleAddedContact = formData => {
     const { contacts } = this.state;
 
